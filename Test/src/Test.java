@@ -6,7 +6,20 @@ public class Test {
         Scanner in = new Scanner(System.in);
 
         for(int i = 0; i < 100; i++){
-            System.out.println(Math.toDegrees(joyStickAngle(in.nextDouble(),in.nextDouble())));
+            System.out.println("Angle: ");
+            double angle = in.nextDouble() * (Math.PI/180);
+
+            angle -= Math.PI/4;
+
+            double a, b, c, d;
+            a = Math.sin(angle);
+            b = Math.cos(angle);
+//            c = Math.cos(angle);
+//            d = Math.sin(angle);
+
+            double[] powers = scaledPowers(a, b);
+
+            System.out.printf("1: %s\n2: %s\n3: %s\n4: %s\n", a, b, b, a);
         }
     }
     static double joyStickAngle(double x, double y) {
@@ -30,5 +43,22 @@ public class Test {
         }
 
         return angle;
+    }
+
+    static double[] scaledPowers(double a, double b) {
+        double aAbs = a, bAbs = b;
+
+        if(aAbs < 0) {
+            aAbs = -aAbs;
+        }
+
+        if(bAbs < 0) {
+            bAbs = -bAbs;
+        }
+
+        if(aAbs > bAbs) {
+            return new double[]{a/aAbs, b/aAbs};
+        }
+        return new double[] {a/bAbs, a/aAbs};
     }
 }
