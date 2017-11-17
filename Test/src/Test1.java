@@ -13,8 +13,6 @@ public class Test1 {
             System.out.print("Angle: ");
             angle = (in.nextDouble()) * (Math.PI/180);
 
-            angle += Math.PI/4;
-
             System.out.print("Magnitude: ");
             magnitude = in.nextDouble();
 
@@ -25,6 +23,8 @@ public class Test1 {
 
             System.out.print("X2 (Turn factor): ");
             x2 = in.nextDouble();
+
+            angle -= Math.PI/4;
 
             if (x1 != 0 && y1 != 0) {
                 //Power Values

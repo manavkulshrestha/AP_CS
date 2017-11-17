@@ -4,61 +4,59 @@ public class Test {
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
+        double x1, x2, y1;
+        double magnitude, angle;
 
         for(int i = 0; i < 100; i++){
-            System.out.println("Angle: ");
-            double angle = in.nextDouble() * (Math.PI/180);
+            System.out.print("Driver Angle: ");
+            angle = in.nextDouble() * (Math.PI/180);
+            System.out.print("Magnitude: ");
+            magnitude = in.nextDouble();
+            System.out.print("x2: ");
+            x2 = in.nextDouble();
+
+            x1 = magnitude * Math.cos(angle);
+            y1 = magnitude * Math.sin(angle);
+
+            System.out.printf("x1: %s   y1: %s\n", x1, y1);
 
             angle -= Math.PI/4;
 
-            double a, b, c, d;
-            a = Math.sin(angle);
-            b = Math.cos(angle);
-//            c = Math.cos(angle);
-//            d = Math.sin(angle);
+            double LFP, RFP, LRP, RRP;
+            LFP = Math.cos(angle) + x2;
+            RFP = Math.sin(angle) - x2;
+            LRP = Math.sin(angle) + x2;
+            RRP = Math.cos(angle) - x2;
 
-            double[] powers = scaledPowers(a, b);
+//            double scaleFactor = maxAbsolute(LFP, RFP, LRP, RRP);
+//            LFP /= scaleFactor;
+//            RFP /= scaleFactor;
+//            LRP /= scaleFactor;
+//            RRP /= scaleFactor;
 
-            System.out.printf("1: %s\n2: %s\n3: %s\n4: %s\n", a, b, b, a);
+            LFP *= magnitude;
+            RFP *= magnitude;
+            LRP *= magnitude;
+            RRP *= magnitude;
+
+            System.out.printf("Left Front: %s\t\tRight Front: %s\nLeft Rear: %s\t\tRight Rear: %s\n\n", LFP, RFP, LRP, RRP);
         }
     }
-    static double joyStickAngle(double x, double y) {
-        double angle = 0;
 
-        if(x == 0) {
-            if(y > 0) {
-                angle = Math.PI/2;
-            } else if(y < 0) {
-                angle = (3*Math.PI)/2;
+    public static double maxAbsolute(double... powers) {
+        double maximumAbs = 0, temp;
+
+        for(double power: powers) {
+            temp = Math.abs(power);
+            if(temp > maximumAbs) {
+                maximumAbs = temp;
             }
-        } else {
-            if(x > 0) {
-                angle = Math.atan(y/x);
-            } else {
-                angle = Math.PI - Math.atan(y/-x);
-            }
-            if(angle < 0) {
-                angle = 2*Math.PI + angle;
+
+            if(maximumAbs == 0) {
+                return 1;
             }
         }
 
-        return angle;
-    }
-
-    static double[] scaledPowers(double a, double b) {
-        double aAbs = a, bAbs = b;
-
-        if(aAbs < 0) {
-            aAbs = -aAbs;
-        }
-
-        if(bAbs < 0) {
-            bAbs = -bAbs;
-        }
-
-        if(aAbs > bAbs) {
-            return new double[]{a/aAbs, b/aAbs};
-        }
-        return new double[] {a/bAbs, a/aAbs};
+        return maximumAbs;
     }
 }
