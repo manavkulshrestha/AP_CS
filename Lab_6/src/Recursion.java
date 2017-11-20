@@ -1,8 +1,15 @@
+/*
+	Manav Kulshrestha
+ 	H Block
+ 	11/16/2017
+ 	Recursion.java
+ */
 import java.util.Scanner;
 
 public class Recursion {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+        //I see what you did here, Mr. Harris
         String menu = "1. letters\n2. twos\n3. powerOfThree\n4. reverse\n5. base5\n6. printWithCommas\nSELECT: ";
 
         print(menu);
@@ -24,9 +31,9 @@ public class Recursion {
             case 3:
                 print("Enter number: ");
                 if (powerOf3(in.nextInt()))
-                    print("IS a power of 3\n");
+                    print("IS a power of 3");
                 else
-                    print("Is NOT a power of 3\n");
+                    print("Is NOT a power of 3");
                 break;
             case 4:
                 print("Enter number: ");
@@ -82,12 +89,13 @@ public class Recursion {
             return false;
     }
 
-    public static int lowestPowerOf10(int num) {
-        return (num/10 == 0) ? 1 : 10*lowestPowerOf10(num/10);
+    public static int floorPowerOf10(int num) {
+        return (num<10) ? 1 : 10*floorPowerOf10(num/10);
     }
 
+    //Leading zeros not preserved. eg: 10000
     public static int reverse(int num) {
-        return (((num<0) ? -num: num)<10) ? num : (num%10)*lowestPowerOf10(num)+reverse(num/10);
+        return (((num<0) ? -num : num)<10) ? num : (num%10)*floorPowerOf10(num)+reverse(num/10);
     }
 
     public static void base5(int num) {
@@ -98,20 +106,10 @@ public class Recursion {
     }
 
     public static void printWithCommas(int num) {
-        if (num>999) {
+        if(num>999) {
             printWithCommas(num/1000);
-            print(',');
-
-            num %= 1000;
-
-            if (num<100)
-                print('0');
-            if (num<10)
-                print('0');
-
-            print(num);
-        }
-        else
+            printf(",%03d", num%1000);
+        } else
             print(num);
     }
 }
