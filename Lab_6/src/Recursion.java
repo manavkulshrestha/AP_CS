@@ -75,7 +75,7 @@ public class Recursion {
     }
 
     public static int twos(int num) {
-        return (num%2 != 0) ? 0 : 1+twos(num/2);
+        return ((num&1) == 1) ? 0 : 1+twos(num/2);
     }
 
     public static boolean powerOf3(int n) {

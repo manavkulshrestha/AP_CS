@@ -24,9 +24,9 @@ public class HWTest {
     }
 
     public static int f3v2(int x) {
-        if(x>3) {
+        if(x>3)
             return (x%2 == 0) ? 17 : 22;
-        } else
+        else
             return x*x+1;
     }
 
