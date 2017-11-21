@@ -13,6 +13,8 @@ public class HWTest {
         System.out.print(f2(6, 5));
         nl();
         System.out.print(f3(f3(f3(f3(f3(f3(3)))))));
+        nl();
+        System.out.print(f3v2(f3v2(f3v2(f3v2(f3v2(f3v2(3)))))));
     }
 
     public static int f3(int x) {
@@ -25,7 +27,7 @@ public class HWTest {
 
     public static int f3v2(int x) {
         if(x>3)
-            return ((x&2) == 0) ? 17 : 22;
+            return ((x&1) == 0) ? 17 : 22;
         else
             return x*x+1;
     }
@@ -45,34 +47,30 @@ public class HWTest {
     }
 
     public static int puzzle(int base, int limit) {
-        if(base>limit) {
+        if(base>limit)
             return -1;
-        } else if(base==limit) {
+        else if(base == limit)
             return 1;
-        } else {
+        else
             return base*puzzle(base+1, limit);
-        }
     }
 
     public static void show3(int n) {
         System.out.print(n%10);
-        if(n!=0) {
+        if(n != 0)
             show3(n/10);
-        }
         System.out.print(n%10);
     }
 
     public static void show1(int n) {
-        if(n!=0) {
+        if(n != 0)
             show1(n/10);
-        }
         System.out.print(n%10);
     }
 
     public static void show2(int n) {
         System.out.print(n%10);
-        if(n!=0) {
+        if(n != 0)
             show2(n/10);
-        }
     }
 }
