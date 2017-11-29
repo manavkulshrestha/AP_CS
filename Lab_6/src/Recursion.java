@@ -9,53 +9,56 @@ import java.util.Scanner;
 public class Recursion {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+        int option;
         //I see what you did here, Mr. Harris
         String menu = "1. letters\n2. twos\n3. powerOfThree\n4. reverse\n5. base5\n6. printWithCommas\nSELECT: ";
 
-        print(menu);
 
-        int option = in.nextInt();
-        print("\n");
+        do {
+            print(menu);
 
-        switch(option) {
-            case -1:
-                break;
-            case 1:
-                print("Enter letter: ");
-                letters(Character.toLowerCase(in.next().charAt(0)));
-                break;
-            case 2:
-                print("Enter number: ");
-                print(twos(in.nextInt()));
-                break;
-            case 3:
-                print("Enter number: ");
-                if (powerOf3(in.nextInt()))
-                    print("IS a power of 3");
-                else
-                    print("Is NOT a power of 3");
-                break;
-            case 4:
-                print("Enter number: ");
-                print(reverse(in.nextInt()));
-                break;
-            case 5:
-                print("Enter number: ");
-                base5(in.nextInt());
-                break;
-            case 6:
-                print("Enter number: ");
-                printWithCommas(in.nextInt());
-                break;
-            default:
-                print("-_-");
-                break;
-        }
+            option = in.nextInt();
+            print("\n");
 
-        if(option != -1) {
-            print("\n\n");
-            main(args);
-        }
+            switch (option) {
+                case -1:
+                    break;
+                case 1:
+                    print("Enter letter: ");
+                    letters(Character.toLowerCase(in.next().charAt(0)));
+                    break;
+                case 2:
+                    print("Enter number: ");
+                    print(twos(in.nextInt()));
+                    break;
+                case 3:
+                    print("Enter number: ");
+                    if (powerOf3(in.nextInt()))
+                        print("IS a power of 3");
+                    else
+                        print("Is NOT a power of 3");
+                    break;
+                case 4:
+                    print("Enter number: ");
+                    print(reverse(in.nextInt()));
+                    break;
+                case 5:
+                    print("Enter number: ");
+                    base5(in.nextInt());
+                    break;
+                case 6:
+                    print("Enter number: ");
+                    printWithCommas(in.nextInt());
+                    break;
+                default:
+                    print("-_-");
+                    break;
+            }
+
+            if(option != -1)
+                print("\n\n");
+
+        } while(option != -1);
     }
 
     //because writing System.out is tedious
@@ -79,6 +82,7 @@ public class Recursion {
     }
 
     public static boolean powerOf3(int n) {
+        //return (n==1) ? true : (n<=0) ?
         if(n == 1)
             return true;
         else if(n <= 0)
@@ -90,7 +94,7 @@ public class Recursion {
     }
 
     public static int floorPowerOf10(int num) {
-        return (num<10) ? 1 : 10*floorPowerOf10(num/10);
+        return (((num<0) ? -num : num)<10) ? 1 : 10*floorPowerOf10(num/10);
     }
 
     //Leading zeros not preserved. eg: 10000
