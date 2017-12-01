@@ -1,10 +1,11 @@
 /*
-Manav Kulshrestha
-BlackBoxChallengeV2.java
-Block H
+    Manav Kulshrestha
+    12/1/2017
+    BlackBoxChallengeV2.java
+    Block H
 
-CHEAT CODE: 42
-Enter as choice to see TOGGLE seeing all mirrors
+    CHEAT CODE: 42
+    Enter as choice to see TOGGLE seeing all mirrors
  */
 
 import java.util.Random;
