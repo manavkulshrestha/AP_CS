@@ -1,35 +1,44 @@
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class BlackBoxChallenge {
-
     public static void main(String[] args) {
-//        char[][] box = new char[10][10];
-        int[] startState;
-        int endPos;
+        Scanner input = new Scanner(System.in);
+        char[][] box = new char[10][10];
+        int option, endPos;
 
-//        for(int i=0; i<box.length; i++)
-//            for(int j=0; j<box.length; j++)
-//                box[i][j] = '.';
+        do {
+            option = input.nextInt();
 
-        char[][] box = {
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '2', '.', '.', '.', '.', '.', '.', '.'},
-        };
+            switch(option) {
+                case 1:
+                    int[] laser = getStartState(input.nextInt());
+                    endPos = shootLaser(box, laser[0], laser[1], laser[2], laser[3]);
+            }
 
-        //placeMirrors(box, 10);
-        displayBox(box);
-        startState = getStartState(19);
-        endPos = shootLaser(box, startState[0], startState[1], startState[2], startState[3]);
-        printf("\n%d\n", endPos);
+            for (int i = 0; i < box.length; i++)
+                for (int j = 0; j < box.length; j++)
+                    box[i][j] = '.';
+
+            placeMirrors(box, 10);
+
+            //        char[][] box = {
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+            //                {'.', '.', '2', '.', '.', '.', '.', '.', '.', '.'},
+            //        };
+
+            displayBox(box);
+            //printf("\n%d\n", endPos);
+        } while(option != 0);
     }
 
     public static void placeMirrors(char[][] box, int n) {
@@ -50,7 +59,7 @@ public class BlackBoxChallenge {
         }
     }
 
-    //because writing System.out is tedious
+    //because writing System.out. is tedious
     public static void printf(String s, Object... o) {
         System.out.printf(s, o);
     }
@@ -64,7 +73,7 @@ public class BlackBoxChallenge {
      *Recursive function to shoot laser. Outputs the end position using the end state of the laser.
      *
      * @param box   2-D character array containing '.', '0', '1', '2', '3' chars.
-     *              '.' represents a no mirror (blank .). Laser proceeeds normally as per direction vectors
+     *              '.' represents a no mirror (blank .). Laser proceeds normally as per direction vectors
      *              '0' and '1' represent mirror \. Laser colliding with these switches direction vectors and changes direction
      *              '2' and '3' represent mirror /.  Laser colliding with these only switches direction vectors
      * @param x     X coordinate of the laser
@@ -73,24 +82,12 @@ public class BlackBoxChallenge {
      * @param j     Vertical direction vector of movement
      * @return      Modified state of the laser. x and y change as per direction vector. Direction vectors change as per mirror.
      */
-//    public static int shootLaser(char[][] box, int x, int y, int i, int j) {
-//        printf("\nX:%d;Y:%d;I:%d;J:%d; B:%s\n", x, y, i, j, box[x][y]);
-//        if(wallCollision(x, y, i, j))
-//            return getEndPos(x, y, i, j);
-//        else if(box[x][y] == '.')
-//            return shootLaser(box, x+i, y+j, i, j);
-//        else if((int)box[x][y] <= 1)//Mirror is \
-//            return shootLaser(box, x-j, y-i, -j, -i);
-//        else
-//            return shootLaser(box, x+j, y+i, j, i);
-//    }
         public static int shootLaser(char[][] box, int x, int y, int i, int j) {
-        printf("\nX:%d;Y:%d;I:%d;J:%d; B:%s\n", x, y, i, j, box[y][x]);
         if(wallCollision(x, y, i, j))
             return getEndPos(x, y, i, j);
         else if(box[y][x] == '.')
             return shootLaser(box, x+i, y+j, i, j);
-        else if((box[y][x]-48) <= 1)//Mirror is \
+        else if((box[y][x]-'0') <= 1)//Mirror is \
             return shootLaser(box, x-j, y-i, -j, -i);
         else//Mirror is /
             return shootLaser(box, x+j, y+i, j, i);
@@ -132,24 +129,20 @@ public class BlackBoxChallenge {
         return (i == -1 && x <= 0) || (i == 1 && x >= 9) || (j == -1 && y <= 0) || (j == 1 && y >= 9);
     }
 
-    //display
     public static void displayBox(char[][] box) {
         print("   20212223242526272829\n");
         for(int i=box.length-1; i>=0; i--) {
             printf("%d ", 10+i);
             for(int colItem: box[i]) {
                 switch(colItem) {
-                    case '.':
-                        print(". ");
-                        break;
                     case '0':
-                    case '1':
                         print("\\ ");
                         break;
                     case '2':
-                    case '3':
                         print("/ ");
                         break;
+                    default:
+                        print('.');
                 }
             }
             printf("%d \n", 39-i);
