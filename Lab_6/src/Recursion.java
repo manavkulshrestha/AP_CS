@@ -110,6 +110,10 @@ public class Recursion {
     }
 
     public static void printWithCommas(int num) {
+        if(num<0) {
+            num = -num;
+            print('-');
+        }
         if(num>999) {
             printWithCommas(num/1000);
             printf(",%03d", num%1000);
