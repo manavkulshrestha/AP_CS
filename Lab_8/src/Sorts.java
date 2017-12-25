@@ -1,5 +1,5 @@
 //********************************************************************
-//  Sorts.java       Author:
+//  Sorts.java       Author: Manav Kulshrestha
 //
 //  A collection of methods for sorting Arrays.
 //********************************************************************
@@ -14,7 +14,7 @@ public class Sorts
 	
 	public static Group Insertion(int[] list)
     {
-        Group icount = new Group(0,0);
+        Group icount = new Group();
 		for (int n = 1; n < list.length; n++)
 		{
 			// Save the next element to be inserted:
@@ -65,10 +65,6 @@ public class Sorts
 			swap(list, iMax, n-1);
             scount.move += 3;
 			
-			// int listTemp = list[iMax];
-			// list[iMax] = list[n-1];
-			// list[n-1] = listTemp;
-			
 			// Decrement n (accomplished by n-- in the for loop).
 		}
         return scount;
@@ -78,45 +74,28 @@ public class Sorts
     {
         Group mcount = new Group();
 		temp = new int[list.length];
-		int i = from, j = middle + 1, k = from;
+		int i = from, j = middle+1, k = from;
 		
 		// While both arrays have elements left unprocessed:
 		while (i <= middle && j <= to)
 		{
+            mcount.move++;
+            mcount.compare++;
 			if (list[i] < list[j])
-			{
-				temp[k] = list[i];   // Or simply temp[k] = a[i++];
-                mcount.move++;
-				i++;
-				mcount.compare++;
-			}
+				temp[k++] = list[i++];
 			else
-			{
-				temp[k] = list[j];
-                mcount.move++;
-				j++;
-				mcount.compare++;
-			}
-			k++;
+				temp[k++] = list[j++];
 		}
 		
 		// Copy the tail of the first half, if any, into temp:
         mcount.move += (middle-i)+1;
 		while (i <= middle)
-		{
-			temp[k] = list[i];     // Or simply temp[k++] = a[i++]
-			i++;
-			k++;
-		}
+			temp[k++] = list[i++];
 		
 		// Copy the tail of the second half, if any, into temp:
-        mcount.move += (middle-j)+1;
+        mcount.move += (to-j)+1;
 		while (j <= to)
-		{
-			temp[k] = list[j];     // Or simply temp[k++] = a[j++]
-			j++;
-			k++;
-		}
+			temp[k++] = list[j++];
 		
 		// Copy temp back into a
         mcount.move += (to-from)+1;
@@ -179,10 +158,8 @@ public class Sorts
             }
 			else
 			{
-				swap(list, i, j);
+				swap(list, i++, j--);
                 qcount.move += 3;
-				i++;
-				j--;
                 qcount.compare += 2;
 			}
 		}
@@ -192,14 +169,14 @@ public class Sorts
 		if (p < j)    // place the pivot in its correct position
 		{
 			swap(list, j, p);
+			p=j;
             qcount.move += 3;
-			p = j;
 		}
 		else if (p > i)
 		{
 			swap(list, i, p);
+			p=i;
             qcount.move += 3;
-			p = i;
 		}
 		
 		// Sort recursively:
@@ -208,16 +185,16 @@ public class Sorts
 		
 		return qcount;
 	}
-    
+
     public static Group QuickMid(int[] list, int from, int to)
 	{
-        Group qcount = new Group(0, 0);
+        Group qcount = new Group();
 
 		if (from >= to)
 			return qcount;
 
 		// Choose pivot list[p]:
-		int p = (to-from)/2;
+		int p = (from+to)/2;
 		// The choice of the pivot location may vary:
 		//   you can also use p = from or p = to or use
 		//   a fancier method, say, the median of the above three.
@@ -240,10 +217,8 @@ public class Sorts
 			}
 			else
 			{
-				swap(list, i, j);
+				swap(list, i++, j--);
                 qcount.move += 3;
-				i++;
-				j--;
                 qcount.compare += 2;
 			}
 		}
@@ -253,19 +228,19 @@ public class Sorts
 		if (p < j)    // place the pivot in its correct position
 		{
 			swap(list, j, p);
+			p=j;
             qcount.move += 3;
-            p = j;
 		}
 		else if (p > i)
 		{
 			swap(list, i, p);
+			p=i;
             qcount.move += 3;
-            p = i;
 		}
 
 		// Sort recursively:
-		qcount.add(QuickMid(list, from, p - 1));
-		qcount.add(QuickMid(list, p + 1, to));
+		qcount.add(QuickMid(list, from, p-1));
+		qcount.add(QuickMid(list, p+1, to));
 
 		return qcount;
     }
@@ -278,7 +253,7 @@ public class Sorts
 			return qcount;
 
 		// Choose pivot list[p]:
-		int p = ListSetup.rand.nextInt(to)+from;
+		int p = ListSetup.rand.nextInt(to-from)+from;
 		//   The choice of the pivot location may vary:
 		//   you can also use p = from or p = to or use
 		//   a fancier method, say, the median of the above three.
@@ -301,10 +276,8 @@ public class Sorts
 			}
 			else
 			{
-				swap(list, i, j);
+				swap(list, i++, j--);
                 qcount.move += 3;
-                i++;
-				j--;
                 qcount.compare += 2;
 			}
 		}
@@ -314,14 +287,14 @@ public class Sorts
 		if (p < j)    // place the pivot in its correct position
 		{
 			swap(list, j, p);
-            qcount.move += 3;
             p = j;
+            qcount.move += 3;
 		}
 		else if (p > i)
 		{
 			swap(list, i, p);
-            qcount.move += 3;
             p = i;
+            qcount.move += 3;
 		}
 
 		// Sort recursively:
@@ -355,11 +328,6 @@ class Group {
     public void add(Group a) {
         this.compare += a.compare;
         this.move += a.move;
-    }
-
-    public void add(int compare, int move) {
-        this.compare += compare;
-        this.move += move;
     }
 
     public void print(String formatLabel) {

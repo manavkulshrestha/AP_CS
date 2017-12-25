@@ -2,15 +2,15 @@ import java.util.Arrays;
 
 public class SortTest {
     public static void main(String[] args) {
-        int[] lawrence = {23, 38, 46, 37, 6, 22, 5, 4, 31, 49};
+        char[] lawrence = {'h', 'e', 'g', 'f', 'd', 'b', 'a', 'c'};
         System.out.print(Arrays.toString(lawrence)+"\n");
 
-        mergeSort(lawrence, 0, lawrence.length-1);
+        selection(lawrence);
 
         System.out.print(Arrays.toString(lawrence));
     }
 
-    public static int selection(int[] list) {
+    public static int selection(char[] list) {
         for(int n=list.length; n>1; n--) {
             // Find the index iMax of the largest element
             //   among list[0], ..., list[n-1]:
@@ -31,14 +31,14 @@ public class SortTest {
         return 0;
     }
 
-    public static void swap(int[] list, int a, int b) {
-        int temp = list[a];
+    public static void swap(char[] list, int a, int b) {
+        char temp = list[a];
         list[a] = list[b];
         list[b] = temp;
     }
 
-    public static int merge(int[] list, int from, int middle, int to) {
-        int[] temp = new int[list.length];
+    public static int merge(char[] list, int from, int middle, int to) {
+        char[] temp = new char[list.length];
         int i = from, j = middle+1, k = from;
 
         // While both arrays have elements left unprocessed:
@@ -63,7 +63,7 @@ public class SortTest {
         return 0;
     }
 
-    public static int mergeSort(int[] list, int from, int to) {
+    public static int mergeSort(char[] list, int from, int to) {
         if(to-from < 2) { // Base case: 1 or 2 elements
             if(to>from && list[to]<list[from]) {
                 swap(list, to, from);
@@ -83,7 +83,7 @@ public class SortTest {
     }
 
 
-    public static int quickSort(int[] list, int from, int to) {
+    public static int quickSort(char[] list, int from, int to) {
         if(from >= to)
             return 0;
 
