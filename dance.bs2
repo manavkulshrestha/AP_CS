@@ -1,0 +1,32 @@
+'{$STAMP BS2}
+'{$PBASIC 2.5}
+
+GOSUB StartTune
+
+StartTune:
+	'left DATA WORD 1175, WORD 1175, WORD 1175, WORD 1175, WORD 1175, WORD 1568, WORD 1568
+	middle DATA WORD 1480, WORD 1480, WORD 1480, WORD 1480, WORD 1480, WORD 0, WORD 1976
+	right DATA WORD 2637, WORD 2637, WORD 2637, WORD 2093, WORD 2637, WORD 3136, WORD 3136
+
+	durations DATA 16, 8, 8, 16, 8, 4, 4
+
+	wholenote VAR WORD
+	wholenote = 2000
+
+	'note1 VAR WORD
+	note2 VAR WORD
+	note3 VAR WORD
+	duration VAR BYTE
+	i VAR WORD
+
+
+	FOR i=0 TO 7*2 STEP 2
+		'READ left+i, WORD note1
+		READ middle+i, WORD note2
+		READ right+i, WORD note3
+		READ durations+(i/2), duration
+
+		FREQOUT 4, wholenote/duration, note2, note3
+		PAUSE 2
+	NEXT
+RETURN
