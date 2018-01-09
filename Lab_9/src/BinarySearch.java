@@ -1,3 +1,10 @@
+/*
+    Name: Manav Kulshrestha
+    Block: H
+    File: BinarySearch
+    Date: 1/2/18
+ */
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -68,7 +75,7 @@ public class BinarySearch {
     }
 
     public static int intArrayBinarySearch(int[] array, int key) {
-        return intArrayBinarySearch(array, 0, array.length, key);
+        return intArrayBinarySearch(array, 0, array.length-1, key);
     }
 
     public static int intArrayBinarySearch(int[] array, int from, int to, int key) {
