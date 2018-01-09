@@ -1,7 +1,38 @@
 '{$STAMP BS2}
 '{$PBASIC 2.5}
 
+l CON 15
+r CON 14
+i VAR WORD
+s CON 1
+
+FOR i=0 TO 100
+	PULSOUT l, 750
+	PULSOUT r, 750
+	PAUSE 20
+NEXT
+
 GOSUB StartTune
+
+GOSUB Forward
+GOSUB Backward
+GOSUB Forward
+
+GOSUB EndSectionTune
+
+GOSUB Backward
+GOSUB Forward
+GOSUB Backward
+
+GOSUB EndSectionTune
+
+GOSUB RotateRight
+GOSUB RotateLeft
+PAUSE 2000
+
+GOSUB EndSectionTune
+
+END
 
 StartTune:
 	'left DATA WORD 1175, WORD 1175, WORD 1175, WORD 1175, WORD 1175, WORD 1568, WORD 1568
@@ -17,8 +48,6 @@ StartTune:
 	note2 VAR WORD
 	note3 VAR WORD
 	duration VAR BYTE
-	i VAR WORD
-
 
 	FOR i=0 TO 7*2 STEP 2
 		'READ left+i, WORD note1
@@ -26,7 +55,59 @@ StartTune:
 		READ right+i, WORD note3
 		READ durations+(i/2), duration
 
-		FREQOUT 4, wholenote/duration, note2, note3
+		FREQOUT s, wholenote/duration, note2, note3
 		PAUSE 2
 	NEXT
+RETURN
+
+Forward:'1.7+1.3+1.3 = 4.3
+FOR i=0 TO 50
+	PULSOUT l, 850
+	PULSOUT r, 650
+	PAUSE 17
+NEXT
+RETURN
+
+Backward:'1.3+1.7+1.3 = 4.3
+FOR i=0 TO 50
+	PULSOUT l, 650
+	PULSOUT r, 850
+	PAUSE 17
+NEXT
+RETURN
+
+RotateLeft:
+FOR i=0 TO 24'1.3+1.3+1.3 = 3.9
+	PULSOUT l, 650
+	PULSOUT r, 650
+	PAUSE 17
+NEXT
+RETURN
+
+RotateRight:
+FOR i=0 TO 30'1.7+1.7+1.3 = 4.7
+	PULSOUT l, 850
+	PULSOUT r, 850
+	PAUSE 17
+NEXT
+RETURN
+
+PivotLeft:
+FOR i=0 TO 75'1.4+1.3+1.3 = 4
+	PULSOUT l, 750
+	PULSOUT r, 650
+	PAUSE 17
+NEXT
+RETURN
+
+PivotRight:
+FOR i=0 TO 75'1.7+1.4+1.3 = 4.4
+	PULSOUT l, 850
+	PULSOUT r, 750
+	PAUSE 17
+NEXT
+RETURN
+
+EndSectionTune:
+FREQOUT s, 500, 2093, 4186
 RETURN

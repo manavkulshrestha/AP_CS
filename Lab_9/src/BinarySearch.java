@@ -28,15 +28,23 @@ public class BinarySearch {
             printf("\tStatus: %s\n", (index<0) ? "Not Found" : index);
         }
 
-//        index = Arrays.binarySearch(arushiSushi, key);
-//        index = intArrayBinarySearch(arushiSushi, key);
+        print("\n");
+
+        print("My Binary Search:\n");
+        for(int i=0; i<2; i++) {
+            print("Entry: ");
+            int index = intArrayBinarySearch(arushiSushi, in.nextInt());
+            printf("\tStatus: %s\n", (index < 0) ? "Not Found" : index);
+        }
+
+        in.close();
     }
 
     public static void printIntArray(int[] array, int lineBreakPara) {
         for(int i=0; i<array.length; i++) {
             if(i%lineBreakPara == 0)
                 print("\n");
-            printf("%d ", array[i]);
+            printf("%4d", array[i]);
         }
     }
 
@@ -60,15 +68,21 @@ public class BinarySearch {
     }
 
     public static int intArrayBinarySearch(int[] array, int key) {
-        int index = array.length/2;
+        return intArrayBinarySearch(array, 0, array.length, key);
+    }
 
-        while(array[index] != key) {
-            if(array[index] < key)
-                index /= 2;
-            else
-                index = (index+array.length)/2;
+    public static int intArrayBinarySearch(int[] array, int from, int to, int key) {
+        if (to >= from) {
+            int mid = from + (to-from)/2;
+
+            if (array[mid] == key)
+                return mid;
+            if(array[mid] > key)
+                return intArrayBinarySearch(array, from, mid-1, key);
+            return intArrayBinarySearch(array, mid+1, to, key);
         }
 
-        return index;
+        return -1;
     }
+
 }
