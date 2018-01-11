@@ -1,0 +1,64 @@
+'{$STAMP BS2}
+'{$PBASIC 2.5}
+
+l CON 15
+r CON 14
+
+i VAR WORD
+j VAR WORD
+lp VAR WORD
+rp VAR WORD
+d VAR WORD
+s VAR WORD
+
+s = 1
+d = 17
+li = 0
+ri = 0
+
+'i=0:j=100:s=1:lp=850:rp=650:d=17: GOSUB Nav
+'i=0:j=100:s=1:lp=850:rp=650:d=17:li=0:ri=0: GOSUB NavRamp
+
+i=0:j=100:s=1:lp=850:rp=650: GOSUB Nav
+
+Nav:
+FOR i TO j STEP s
+	PULSOUT l, lp
+	PULSOUT r, rp
+	PAUSE d
+NEXT
+RETURN
+
+NavRamp:
+FOR i TO j STEP s
+	PULSOUT l, lp+li
+	PULSOUT r, rp+ri
+	PAUSE d
+NEXT
+RETURN
+
+StartTune:
+	'left DATA WORD 1175, WORD 1175, WORD 1175, WORD 1175, WORD 1175, WORD 1568, WORD 1568
+	middle DATA WORD 1480, WORD 1480, WORD 1480, WORD 1480, WORD 1480, WORD 0, WORD 1976
+	right DATA WORD 2637, WORD 2637, WORD 2637, WORD 2093, WORD 2637, WORD 3136, WORD 3136
+
+	durations DATA 16, 8, 8, 16, 8, 4, 4
+
+	wholenote VAR WORD
+	wholenote = 2000
+
+	'note1 VAR WORD
+	note2 VAR WORD
+	note3 VAR WORD
+	duration VAR BYTE
+
+	FOR i=0 TO 7*2 STEP 2
+		'READ left+i, WORD note1
+		READ middle+i, WORD note2
+		READ right+i, WORD note3
+		READ durations+(i/2), duration
+
+		FREQOUT 1, wholenote/duration, note2, note3
+		PAUSE 2
+	NEXT
+RETURN
