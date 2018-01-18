@@ -44,16 +44,19 @@ public class Cabbages {
         Arrays.sort(words);
         newLen = makeStartUnique(words);//so it isn't evaluated every loop
         for(int i=0; i<newLen; i++) {
-            printf("%d %s\n", i, words[i]);
+            printf("\n%d %s", i, words[i]);
         }
 
+
         in = new Scanner(System.in);
-        print("\nSomething to grep: ");
-        print(grep(FILENAME, in.nextLine(), "\nLine %d: %s"));
+        for(int repeat=0; repeat<3; repeat++) {
+            print("\n\nSomething to grep: ");
+            print(grep(FILENAME, in.nextLine(), "\nLine %d: %s", "\nPhrase doesn't appear in any lines"));
+        }
 
     }
 
-    public static String grep(String fileName, String inp, String format) throws IOException{
+    public static String grep(String fileName, String inp, String format, String nullPhrase) throws IOException{
         Scanner in1 = new Scanner(new File(fileName));
         String ret = "";
 
@@ -64,7 +67,7 @@ public class Cabbages {
                 ret += String.format(format, counter, line.replace(inp, "<"+inp+">"));
         }
 
-        return ret;
+        return (ret.equals("")) ? nullPhrase : ret;
     }
 
     public static String removePunctuations(String s, String[] replaceArr) {
