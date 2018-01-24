@@ -4,36 +4,41 @@
     1/17/18
  */
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Cabbages {
     public static void main(String[] args) throws IOException {
         final String FILENAME = "cabbages.txt";
-        Scanner in = new Scanner(new File(FILENAME));
+        final File CABBAGES = new File(FILENAME);
+        Scanner in;
         int longestWordLen = 0, wordCount = 1, newLen;
-        String longestWord = "";
+        String longestWord = "", fileContent = "";
         String[] punctuations = {"\"", ".", ",", ";", ":", "--", "?", "!", " '", "' "};
 
         print("Words found in text --\n");
-        while(in.hasNext()) {
-            Scanner in2 = new Scanner(in.nextLine());
-            for(;in2.hasNext();) {
-                String word = in2.next();
-                int temp = word.length();
-
-                if(word.length() > longestWordLen) {
-                    longestWord = word;
-                    longestWordLen = temp;
-                }
-                printf("%d %s\n", wordCount++, word);
-            }
-        }
+//        while(in.hasNext()) {
+//            Scanner in2 = new Scanner(in.nextLine());
+//            for(;in2.hasNext();) {
+//                String word = in2.next();
+//                int temp = word.length();
+//
+//                if(word.length() > longestWordLen) {
+//                    longestWord = word;
+//                    longestWordLen = temp;
+//                }
+//                printf("%d %s\n", wordCount++, word);
+//            }
+//        }
+        readFileToString(FILENAME);
         wordCount--;
         printf("The longest word in the text is <%s>", longestWord);
 
         print("\n\nWords sorted alphabetically with duplicates removed --\n");
-        in = new Scanner(new File(FILENAME));
+        in = new Scanner(CABBAGES);
         String[] words = new String[wordCount];
         for(int i=0; in.hasNext();) {
             Scanner in2 = new Scanner(in.nextLine());
@@ -42,32 +47,28 @@ public class Cabbages {
         }
 
         Arrays.sort(words);
-        newLen = makeStartUnique(words);//so it isn't evaluated every loop
+        newLen = makeStartUnique(words);// variable so upper bound isn't evaluated every loop
         for(int i=0; i<newLen; i++) {
             printf("\n%d %s", i, words[i]);
         }
 
-
         in = new Scanner(System.in);
         for(int repeat=0; repeat<3; repeat++) {
             print("\n\nSomething to grep: ");
-            print(grep(FILENAME, in.nextLine(), "\nLine %d: %s", "\nPhrase doesn't appear in any lines"));
+            print(grep(fileContent, in.nextLine(), "\nLine %d: %s", "\nPhrase doesn't appear in any lines"));
         }
-
     }
 
-    public static String grep(String fileName, String inp, String format, String nullPhrase) throws IOException{
-        Scanner in1 = new Scanner(new File(fileName));
+    public static String grep(String fileContent, String inp, String format, String nullPhrase) throws IOException{
         String ret = "";
 
-        for(int counter=1; in1.hasNext(); counter++) {
-            String line = in1.nextLine();
 
-            if(line.contains(inp))
-                ret += String.format(format, counter, line.replace(inp, "<"+inp+">"));
-        }
+        return ret;
+    }
 
-        return (ret.equals("")) ? nullPhrase : ret;
+    public static String readFileToString(String fileName) throws IOException {
+        byte[] b = Files.readAllBytes(Paths.get(fileName));
+        return new String(b, StandardCharsets.UTF_8);
     }
 
     public static String removePunctuations(String s, String[] replaceArr) {
