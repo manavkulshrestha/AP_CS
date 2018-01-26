@@ -93,7 +93,7 @@ public class Cabbages {
         int j = 0;
 
         for(int i=1; i < arr.length; i++) {
-            if (!arr[i].equals(arr[j])) {
+            if(!arr[i].equals(arr[j])) {
                 j++;
                 arr[j] = arr[i];
             }

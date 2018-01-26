@@ -5,14 +5,15 @@
  */
 import java.io.*;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Cabbages2 {
     public static void main(String[] args) throws IOException {
         final String FILENAME = "cabbages.txt";
         String fileContent;
-        String[] punctuations = {"\"", ".", ",", ";", ":", "--", "?", "!", " '", "' "}, words;
-        int[] info = new int[] {0};
+        String[] punctuations = {"\"", ".", ",", ";", ":", "-", "?", "!", "'"}, words, lines;
+        int[] info = new int[] {0, 0};
         int newLength;
 
         print("Words found in text --\n");
@@ -25,10 +26,16 @@ public class Cabbages2 {
         newLength = makeStartUnique(words);
         for(int i=0; i<newLength; i++)
             printf("%d %s\n", i, words[i]);
-        print("\n");
 
-        fileContent = readFileToString(FILENAME);
+        lines = new String[info[1]];
+        fileContent = readFile(FILENAME, lines);
 
+        Scanner in = new Scanner(System.in);
+        for(int repeat=0; repeat<3; repeat++) {
+            print("\nSomething to grep: ");
+            grep(in.nextLine(), fileContent, lines, "\nLine %d: %s", "\nPhrase doesn't appear in any lines");
+            print("\n");
+        }
     }
 
     public static String partOne(String fileName, String format, int[] info) throws IOException{
@@ -36,7 +43,7 @@ public class Cabbages2 {
         String line, word, longestWord = null;
         int temp, longestWordLength = 0;
 
-        for(info[0]=0/*number of words*/; (line = br.readLine()) != null;) {
+        for(info[0]=0/*number of words*/, info[1]=0/*number of lines*/; (line = br.readLine()) != null; info[1]++) {
             StringTokenizer st = new StringTokenizer(line);
             for(int j=0; st.hasMoreTokens(); j++) {
                 word = st.nextToken();
@@ -64,36 +71,63 @@ public class Cabbages2 {
         return words;
     }
 
-    public static String readFileToString(String fileName) throws IOException{
+    public static String readFile(String fileName, String[] lines) throws IOException{
         BufferedReader br = new BufferedReader(new FileReader(fileName));
-        String ret = br.readLine(), line;
+        String ret = "", line;
 
-        while((line = br.readLine()) != null)
-            ret += "\n"+line;
+        for(int i=0; (line = br.readLine()) != null; i++) {
+            ret += line;
+            lines[i] = line;
+        }
 
         return ret;
     }
 
+    public static void grep(String phrase, String fileContent, String[] lines, String format, String nullPhrase) {
+        int fileContentLength;
+        String[] newLines = new String[lines.length];
+        boolean noneFound = true;
+
+        fileContent = fileContent.replace(phrase, "<"+phrase+">");
+        fileContentLength = fileContent.length();
+
+        for(int lIndex=0, lStartIndex=0, fCIndex=0; lIndex<lines.length; lIndex++) {
+            for(int currLineIndex=0, upperBound = lines[lIndex].length(); currLineIndex<upperBound; currLineIndex++, fCIndex++) {
+                char c = fileContent.charAt(fCIndex);
+                if(c == '<' || c == '>')
+                    upperBound++;
+            }
+            newLines[lIndex] = fileContent.substring(lStartIndex, fCIndex)+(((fCIndex == fileContentLength-1) && (fileContent.charAt(fCIndex) == '>')) ? ">" : "");
+            lStartIndex = fCIndex;
+        }
+
+        for(int i=0; i<newLines.length; i++) {
+            if(newLines[i].indexOf('<') >= 0) {
+                noneFound = false;
+                do
+                    if(i < newLines.length)
+                        printf(format, i, newLines[i]);
+                while (i < newLines.length && newLines[i++].indexOf('>') == -1);
+            }
+        }
+
+        if(noneFound)
+            print(nullPhrase);
+    }
+
+
     public static String removePunctuations(String s, String[] replaceArr) {
         for(String str: replaceArr)
             s = s.replace(str, "");
-
-        //removing ' at the end or beginning of the string
-        if(s.charAt(0) == '\'')
-            s = s.substring(1);
-        int len = s.length();
-        if(s.charAt(len-1) == '\'')
-            s = s.substring(0, len-1);
-
         return s;
     }
 
     public static int makeStartUnique(String arr[]) {
-        if (arr.length < 2)
+        if(arr.length < 2)
             return arr.length;
 
         int j = 0;
-        for(int i=1; i < arr.length; i++)
+        for(int i=1; i<arr.length; i++)
             if (!arr[i].equals(arr[j]))
                 arr[++j] = arr[i];
 
