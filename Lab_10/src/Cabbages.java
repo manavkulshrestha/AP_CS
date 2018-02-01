@@ -6,7 +6,6 @@
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class Cabbages {
     public static void main(String[] args) throws IOException {
@@ -44,14 +43,21 @@ public class Cabbages {
         int temp, longestWordLength = 0;
 
         for(info[0]=0/*number of words*/, info[1]=0/*number of lines*/; (line = br.readLine()) != null; info[1]++) {
-            StringTokenizer st = new StringTokenizer(line);
-            for(int j=0; st.hasMoreTokens(); j++) {
-                word = st.nextToken();
-                if((temp = word.length()) > longestWordLength) {
-                    longestWord = word;
+//            StringTokenizer st = new StringTokenizer(line);
+//            for(int j=0; st.hasMoreTokens(); j++) {
+//                word = st.nextToken();
+//                if((temp = word.length()) > longestWordLength) {
+//                    longestWord = word;
+//                    longestWordLength = temp;
+//                }
+//                printf(format, info[0]++, word);
+//            }
+            for(String s: split(line, ' ')) {
+                if((temp = s.length()) > longestWordLength) {
+                    longestWord = s;
                     longestWordLength = temp;
                 }
-                printf(format, info[0]++, word);
+                printf(format, info[0]++, s);
             }
         }
 
@@ -63,9 +69,12 @@ public class Cabbages {
         String[] words = new String[n];
 
         for(int i=0; i<n;) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            while(st.hasMoreTokens())
-                words[i++] = removePunctuations(st.nextToken(), punctuations).toLowerCase();
+//            StringTokenizer st = new StringTokenizer(br.readLine());
+//            while(st.hasMoreTokens())
+//                words[i++] = removePunctuations(st.nextToken(), punctuations).toLowerCase();
+            for(String s: split(br.readLine(), ' ')) {
+                words[i++] = removePunctuations(s, punctuations).toLowerCase();
+            }
         }
 
         return words;
@@ -113,6 +122,26 @@ public class Cabbages {
 
         if(noneFound)
             print(nullPhrase);
+    }
+
+    public static String[] split(String s, char delimiter) {
+        int delCount = 0;
+        for(int i=0; i<s.length(); i++) {
+            if(s.charAt(i) == delimiter) {
+                delCount++;
+            }
+        }
+        String[] ret = new String[delCount+1];
+        for(int i=0, j=0; i<ret.length; i++, j++) {
+            String word = "";
+            char c;
+            for(; j<s.length() && (c = s.charAt(j)) != delimiter; j++) {
+                word += c;
+            }
+            ret[i] = word;
+        }
+
+        return ret;
     }
 
 
