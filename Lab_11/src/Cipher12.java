@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class Cipher {
+public class Cipher12 {
     public static void main(String args[]) throws IOException{
         BufferedReader br = new BufferedReader(new FileReader("cipher.txt"));
         BufferedWriter out;
@@ -41,28 +41,30 @@ public class Cipher {
             textRecord[i].setReplaceLetter(frequencyChart[i]);
         pf("After sorting and putting in replace characters:\n%s\n\n", Arrays.toString(textRecord));
 
-        // assuming duplicate frequency runs of max length 2. stores duplicates' indexes
+        // assuming duplicate frequency runs of max length 2. store interchangable letters
         int duplicates = 0;
         for(int i=1; i<textRecord.length; i++)
-            if(textRecord[i-1].compareTo(textRecord[i]) == 0)
+            if(textRecord[i-1].compareTo(textRecord[i]) == 0 && textRecord[i].getFrequency() > 0)
                 duplicates++;
-        int[] duplicateStartIndexes = new int[duplicates];
+        int[][] interchangable = new int[duplicates][2];
         for(int i=1, j=0; i<textRecord.length; i++)
-            if(textRecord[i-1].compareTo(textRecord[i]) == 0)
-                duplicateStartIndexes[j++] = i-1;
+            if(textRecord[i-1].compareTo(textRecord[i]) == 0 && textRecord[i].getFrequency() > 0)
+                interchangable[j++] = new int[] {textRecord[i-1].getOriginalLetter()-'A', textRecord[i].getOriginalLetter()-'A'};
 
         p("Old Poem:\n"+poem);
         p("\nNew Poem:\n");
 
+        // sort in alphabetical order as per original letter
+        Arrays.sort(textRecord, new originalLetterComparator());
+
         // user interaction to fix poem
-        for(int i=0; i<duplicates; i++) {
-            if(textRecord[duplicateStartIndexes[i]].getFrequency() > 0) {
-                p(newPoem = decryptPoem(poem, textRecord));
-                pf("\nSwitch %c and %c? (Y/N): ", textRecord[duplicateStartIndexes[i]].getReplaceLetter(), textRecord[duplicateStartIndexes[i]+1].getReplaceLetter());
-                if(in.next().toUpperCase().charAt(0) == 'Y')
-                    textRecord[duplicateStartIndexes[i]].swapReplace(textRecord[duplicateStartIndexes[i]+1]);
-            }
+        for(int i=0; i<interchangable.length; i++) {
+            p(newPoem = decryptPoem(poem, textRecord));
+            pf("\nSwitch %c and %c? (Y/N): ", textRecord[interchangable[i][0]].getReplaceLetter(), textRecord[interchangable[i][1]].getReplaceLetter());
+            if(in.next().toUpperCase().charAt(0) == 'Y')
+                textRecord[interchangable[i][0]].swapReplace(textRecord[interchangable[i][1]]);
         }
+
         p(newPoem = decryptPoem(poem, textRecord));
         p("\nEnter name of output file (with extention): ");
 
@@ -81,14 +83,8 @@ public class Cipher {
 
         for(int i=0; i<originalPoem.length(); i++) {
             char c = originalPoem.charAt(i);
-            if(c >= 'A' && c <= 'Z') {
-                for(int j=0; j<record.length; j++) {
-                    if(record[j].getOriginalLetter() == c) {
-                        newPoem += record[j].getReplaceLetter();
-                        break;
-                    }
-                }
-            }
+            if(c >= 'A' && c <= 'Z')
+                newPoem += record[c-'A'].getReplaceLetter();
             else
                 newPoem += c;
         }
