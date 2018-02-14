@@ -1,7 +1,7 @@
 /*
     Manav Kulshrestha
-    Main.java
-    1/30/18
+    Cipher12.java
+    2/9/18
 */
 
 import java.io.*;
@@ -42,11 +42,11 @@ public class Cipher12 {
         pf("After sorting and putting in replace characters:\n%s\n\n", Arrays.toString(textRecord));
 
         // assuming duplicate frequency runs of max length 2. store interchangable letters
-        int duplicates = 0;
+        int interchangableCount = 0;
         for(int i=1; i<textRecord.length; i++)
             if(textRecord[i-1].compareTo(textRecord[i]) == 0 && textRecord[i].getFrequency() > 0)
-                duplicates++;
-        int[][] interchangable = new int[duplicates][2];
+                interchangableCount++;
+        int[][] interchangable = new int[interchangableCount][2];
         for(int i=1, j=0; i<textRecord.length; i++)
             if(textRecord[i-1].compareTo(textRecord[i]) == 0 && textRecord[i].getFrequency() > 0)
                 interchangable[j++] = new int[] {textRecord[i-1].getOriginalLetter()-'A', textRecord[i].getOriginalLetter()-'A'};
