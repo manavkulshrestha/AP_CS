@@ -57,8 +57,12 @@ public class UnitedStates {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String state;
 
-        while((state = br.readLine()) != null)
-            states.add(state);
+        while((state = br.readLine()) != null) {
+            if(states.isEmpty())
+                states.add(state);
+            else
+                states.add(modifiedBinarySearch(states, state), state);
+        }
 
         br.close();
         return states;
