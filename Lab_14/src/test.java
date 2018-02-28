@@ -15,19 +15,19 @@ public class test {
         list.add("Manav");
         list.add("Yuval");
 
-        p(binarySearch("Arushi"));
-        p(binarySearch("Jack"));
-        p(binarySearch("Manav"));
-        p(binarySearch("Yuval"));
+        p(modifiedBinarySearch("Arushi"));
+        p(modifiedBinarySearch("Jack"));
+        p(modifiedBinarySearch("Manav"));
+        p(modifiedBinarySearch("Yuval"));
 
-        p(binarySearch("Aa"));
-        p(binarySearch("Ia"));
-        p(binarySearch("La"));
-        p(binarySearch("Xa"));
-        p(binarySearch("Z"));
+        p(modifiedBinarySearch("Aa"));
+        p(modifiedBinarySearch("Ia"));
+        p(modifiedBinarySearch("La"));
+        p(modifiedBinarySearch("Xa"));
+        p(modifiedBinarySearch("Z"));
     }
 
-    public static int binarySearch(String key) {
+    public static int modifiedBinarySearch(String key) {
         int low  = 0, size = list.size(), high = size-1;
 
         while(low <= high) {
