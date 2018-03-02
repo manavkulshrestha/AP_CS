@@ -10,43 +10,30 @@ import java.util.Scanner;
 
 public class UnitedStates {
     public static void main(String args[]) throws IOException {
-        ArrayList<String> states = readFile("states.txt");
-        PrintWriter out;
+        final String FILENAME = "states.txt";
+        ArrayList<String> states = readFile(FILENAME);
+        PrintWriter out = null;
         menu input;
         Scanner in = new Scanner(System.in);
 
         do {
-            for(menu option: menu.values())
-                pf("%d. %s%n", option.ordinal(), option);
-            p(':');
+            pMenu();
 
             switch(input = menu.values()[in.nextInt()]) {
                 case displayList:
-                    for(String state: states)
-                        pf("%n%s", state);
-                    if(!states.isEmpty())
-                        p("\n");
-                    p("\n");
+                    displayStates(states);
                     break;
                 case insertItem:
                     in.nextLine(); // because apparently nextLine means sameLine
-                    String insertState = in.nextLine();
-
-                    if(!states.isEmpty()) {
-                        states.add(modifiedBinarySearch(states, insertState), insertState);
-                    } else
-                        states.add(insertState);
+                    insertState(states, in.nextLine());
                     break;
                 case removeItem:
                     in.nextLine(); // because apparently nextLine means sameLine
-                    states.remove(in.nextLine());
+                    removeState(states, in.nextLine());
                     break;
                 case quit:
                 case saveList:
-                    out = new PrintWriter(new File("states.txt"));
-                    for(String state: states)
-                        out.println(state);
-                    out.close();
+                    saveStates(states, out, FILENAME);
                     break;
             }
         } while(input != menu.quit);
@@ -89,6 +76,39 @@ public class UnitedStates {
             return size;
         else
             return (low < high) ? low+1 : high+1;
+    }
+
+    public static void insertState(ArrayList<String> states, String insertState) {
+        if(!states.isEmpty()) {
+            if(!states.contains(insertState))
+                states.add(modifiedBinarySearch(states, insertState), insertState);
+        } else
+            states.add(insertState);
+    }
+
+    public static void removeState(ArrayList<String> states, String removeState) {
+        states.remove(removeState);
+    }
+
+    public static void displayStates(ArrayList<String> states) {
+        for(String state: states)
+            pf("%n%s", state);
+        if(!states.isEmpty())
+            p("\n");
+        p("\n");
+    }
+
+    public static void saveStates(ArrayList<String> states, PrintWriter out, String fileName) throws IOException {
+        out = new PrintWriter(new File(fileName));
+        for(String state: states)
+            out.println(state);
+        out.close();
+    }
+
+    public static void pMenu() {
+        for(menu option: menu.values())
+            pf("%d. %s%n", option.ordinal(), option);
+        p(':');
     }
 
     public static void p(Object o) {
