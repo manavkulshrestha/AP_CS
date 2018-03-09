@@ -51,6 +51,25 @@ public class DeckTester {
 		System.out.println();
 		System.out.println();
 
-		/* *** TO BE COMPLETED IN ACTIVITY 4 *** */
+		//Deck of 52
+        final int SUIT_CARD_COUNT = 13;
+		String[] standardRanks = {
+		        "King", "Queen", "Jack",
+                "Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two", "One"
+		};
+		String[] standardSuits = {
+		        "Diamonds", "Hearts", "Spades", "Clubs"
+        };
+        int[] standardValues = new int[SUIT_CARD_COUNT];
+        for(int i=0; i<SUIT_CARD_COUNT; i++)
+            standardValues[i] = i;
+
+        Deck standardDeck = new Deck(standardRanks, standardSuits, standardValues);
+        System.out.println(standardDeck);
+
+        for(int i=0; i<10; i++) {
+            standardDeck.shuffle();
+            System.out.println(standardDeck);
+        }
 	}
 }

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * This class provides a convenient way to test shuffling methods.
  */
@@ -7,12 +9,12 @@ public class Shuffler {
 	 * The number of consecutive shuffle steps to be performed in each call
 	 * to each sorting procedure.
 	 */
-	private static final int SHUFFLE_COUNT = 1;
+	private static final int SHUFFLE_COUNT = 10;
 
 	/**
 	 * The number of values to shuffle.
 	 */
-	private static final int VALUE_COUNT = 4;
+	private static final int VALUE_COUNT = 10;
 
 	/**
 	 * Tests shuffling methods.
@@ -60,7 +62,17 @@ public class Shuffler {
 	 * @param values is an array of integers simulating cards to be shuffled.
 	 */
 	public static void perfectShuffle(int[] values) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 3 *** */
+	    int length = values.length, mid = (length+(length&1))/2;
+		int[] shuffled = new int[length];
+
+		for(int i=0, j=0; i<mid; i++, j+=2)
+		    shuffled[j] = values[i];
+
+		for(int i=mid, j=1; i<length; i++, j+=2)
+		    shuffled[j] = values[i];
+
+		for(int i=0; i<length; i++)
+		    values[i] = shuffled[i];
 	}
 
 	/**
@@ -75,6 +87,11 @@ public class Shuffler {
 	 * @param values is an array of integers simulating cards to be shuffled.
 	 */
 	public static void selectionShuffle(int[] values) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 3 *** */
+        Random dice = new Random();
+        for(int i=values.length-1, random=dice.nextInt(i); i>1; random=dice.nextInt(--i)) {
+            int temp = values[i];
+            values[i] = values[random];
+            values[random] = temp;
+        }
 	}
 }

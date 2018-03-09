@@ -27,7 +27,7 @@ public class ElevensBoard extends Board {
 	 * The values of the cards for this game to be sent to the deck.
 	 */
 	private static final int[] POINT_VALUES =
-		{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0};
+		{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 
 	/**
 	 * Flag used to control debugging print statements.
@@ -53,7 +53,15 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean isLegal(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+        int sum = 0, legalSum = 11;
+
+	    if(selectedCards.size() == 3)
+	        legalSum += 12+13; //Jack += Queen+King
+
+	    for(int selectedCard: selectedCards)
+	        sum += cardAt(selectedCard).pointValue();
+
+	    return (sum == legalSum);
 	}
 
 	/**
@@ -66,7 +74,22 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean anotherPlayIsPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+	    boolean legalPairSumExists = false;
+	    boolean[] faceCardExists = new boolean[3];
+	    List<Integer> cIndexes = cardIndexes();
+
+	    for(int i=0, value, size=cIndexes.size(); !legalPairSumExists && i<size; i++) {
+		    if((value = cardAt(i).pointValue()) >= 11)
+		        faceCardExists[value-11] = true;
+		    for(int j=0; !legalPairSumExists && j<size; j+=(j-1==i)?2:1) {
+                List<Integer> selectedCards = new ArrayList<>();
+                selectedCards.add(i);
+                selectedCards.add(j);
+                legalPairSumExists = isLegal(selectedCards);
+            }
+		}
+
+        return (legalPairSumExists || (faceCardExists[0] && faceCardExists[1] && faceCardExists[2]));
 	}
 
 	/**
@@ -78,7 +101,17 @@ public class ElevensBoard extends Board {
 	 *              contain an 11-pair; false otherwise.
 	 */
 	private boolean containsPairSum11(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+	    for(int i=0, size=selectedCards.size(); i<size; i++) {
+		    for(int j=0; j<size; j += (j-1==i)?2:1) {
+                List<Integer> pair = new ArrayList<>();
+                pair.add(i);
+                pair.add(j);
+                if(isLegal(pair))
+                    return true;
+            }
+	    }
+
+	    return false;
 	}
 
 	/**
@@ -90,6 +123,13 @@ public class ElevensBoard extends Board {
 	 *              include a jack, a queen, and a king; false otherwise.
 	 */
 	private boolean containsJQK(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+        boolean[] faceCardExists = new boolean[3];
+        int value;
+
+		for(int selectedCard: selectedCards)
+		    if((value = cardAt(selectedCard).pointValue()) >= 11)
+		        faceCardExists[value-11] = true;
+
+		return (faceCardExists[0] && faceCardExists[1] && faceCardExists[2]);
 	}
 }
