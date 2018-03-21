@@ -1,3 +1,0 @@
-java -ea DeckTesterUncompiled
-PAUSE
-

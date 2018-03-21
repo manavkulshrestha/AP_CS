@@ -1,3 +1,3 @@
-java -ea DeckTester
+java -ea DeckTesterUncompiled
 PAUSE
 

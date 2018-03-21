@@ -9,12 +9,12 @@ public class Shuffler {
 	 * The number of consecutive shuffle steps to be performed in each call
 	 * to each sorting procedure.
 	 */
-	private static final int SHUFFLE_COUNT = 10;
+	private static final int SHUFFLE_COUNT = 9;
 
 	/**
 	 * The number of values to shuffle.
 	 */
-	private static final int VALUE_COUNT = 10;
+	private static final int VALUE_COUNT = 8;
 
 	/**
 	 * Tests shuffling methods.
@@ -26,7 +26,7 @@ public class Shuffler {
 		int[] values1 = new int[VALUE_COUNT];
 		for (int i = 0; i < values1.length; i++) {
 			values1[i] = i;
-			}
+		}
 		for (int j = 1; j <= SHUFFLE_COUNT; j++) {
 			perfectShuffle(values1);
 			System.out.print("  " + j + ":");
