@@ -4,13 +4,16 @@
     3/27/18
 */
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class OOPDesign {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         Scanner in = new Scanner(System.in);
         menu input;
+        final String payrollFile = "payroll.txt";
         Payroll payroll = new Payroll();
+        payroll.readFromFile(payrollFile);
 
         do {
             pMenu();
@@ -21,7 +24,7 @@ public class OOPDesign {
                     break;
                 case AddSalariedEmployee:
                     p("Enter name followed by yearly salary in dollars (Example- John 150000):\n");
-                    Employee salariedEmployee = new SalariedEmployee(in.next(), in.nextDouble());
+                    Employee salariedEmployee = new SalariedEmployee(in.next().replace(":", ""), in.nextDouble());
                     payroll.addEmployee(salariedEmployee);
                     pf("Employee added- %s\n", salariedEmployee);
                     break;
@@ -51,14 +54,12 @@ public class OOPDesign {
                         pf("%s\nRaise pay by: ", raiseEmployee);
                         raiseEmployee.giveRaise(in.nextDouble());
                         pf("%s\n", payroll.findEmployee(id));
-                    } else {
+                    } else
                         p("Employee with that id is not in the Payroll\n");
-                    }
                     break;
                 case LogHourlyEmployeeHours:
                     p("Enter id: ");
                     Employee hourlyEmployeeProbably = payroll.findEmployee(in.nextInt());
-//                    p((hourlyEmployeeProbably != null) ? hourlyEmployeeProbably+"\n" : "");
                     if(hourlyEmployeeProbably != null) {
                         pf("%s\n", hourlyEmployeeProbably);
                         if(hourlyEmployeeProbably instanceof HourlyEmployee) {
@@ -78,6 +79,7 @@ public class OOPDesign {
                     p("New week started\n");
                     break;
                 case quit:
+                    payroll.saveToFile(payrollFile);
                     break;
             }
             p('\n');

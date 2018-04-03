@@ -4,10 +4,8 @@
     3/24/18
 */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class Payroll {
     private List<Employee> employees;
@@ -55,6 +53,34 @@ public class Payroll {
         this.employees.remove(employee);
 
         return true;
+    }
+
+    public void readFromFile(String fileName) throws IOException {
+        Scanner fileReader = new Scanner(new File(fileName));
+
+        if(fileReader.hasNextLine()) {
+            this.employeeID = fileReader.nextInt();
+
+            while(fileReader.hasNextLine()) {
+                String[] lineArray = fileReader.nextLine().split(":");
+                if(lineArray[0] == "H")
+                    this.employees.add(new HourlyEmployee(Integer.parseInt(lineArray[1]), lineArray[2], Double.parseDouble(lineArray[3])));
+                else if(lineArray[0] == "S")
+                    this.employees.add(new SalariedEmployee(Integer.parseInt(lineArray[1]), lineArray[2], Double.parseDouble(lineArray[3])));
+                else
+                    System.out.print("ERROR: Employee type not recognized");
+            }
+        }
+    }
+
+    public void saveToFile(String fileName) throws IOException {
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+
+        out.println(employeeID);
+        for(Employee employee: this.employees)
+            out.println(employee.info());
+
+        out.close();
     }
 
     public boolean print() {

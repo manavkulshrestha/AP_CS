@@ -14,6 +14,11 @@ public class HourlyEmployee extends Employee {
         this.hoursWorked = 0;
     }
 
+    public HourlyEmployee(int id, String name, double hourlyPay) {
+        super(id, name, hourlyPay);
+        this.hoursWorked = 0;
+    }
+
     public void setHoursWorked(double hours) {
         this.hoursWorked = hours;
     }
@@ -41,5 +46,10 @@ public class HourlyEmployee extends Employee {
     @Override
     public String toString() {
         return this.getID()+". "+this.getName()+" worked for "+this.hoursWorked+" hr"+((this.hoursWorked > 1 || this.hoursWorked == 0) ? "s" : "")+" at $"+this.getPay()+"/hr";
+    }
+
+    @Override
+    public String info() {
+        return "H:"+this.getID()+":"+this.getName()+":"+this.getPay();
     }
 }

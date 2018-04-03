@@ -11,6 +11,11 @@ public abstract class Employee {
     private int id;
     private double pay;
 
+    public Employee(int id, String name, double pay) {
+        this.name = name;
+        this.pay = pay;
+    }
+
     public Employee(String name, double pay) {
         this.name = name;
         this.pay = pay;
@@ -47,4 +52,6 @@ public abstract class Employee {
     public abstract double getWeekPay();
 
     public abstract String toString();
+
+    public abstract String info();
 }
