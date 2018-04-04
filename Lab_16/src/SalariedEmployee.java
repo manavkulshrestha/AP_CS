@@ -11,10 +11,6 @@ public class SalariedEmployee extends Employee {
         super(name, yearlySalary);
     }
 
-    public SalariedEmployee(int id, String name, double yearlySalary) {
-        super(id, name, yearlySalary);
-    }
-
     @Override
     public double getWeekPay() {
         return this.getPay()/WEEKS_IN_A_YEAR;
@@ -27,6 +23,6 @@ public class SalariedEmployee extends Employee {
 
     @Override
     public String info() {
-        return "H:"+this.getID()+":"+this.getName()+":"+this.getPay();
+        return "S:"+this.getID()+":"+this.getName()+":"+this.getPay();
     }
 }

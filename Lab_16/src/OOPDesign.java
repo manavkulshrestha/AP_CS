@@ -19,34 +19,34 @@ public class OOPDesign {
             pMenu();
             p('\n');
             switch(input = menu.values()[in.nextInt()]) {
-                case print:
+                case PRINT:
                     payroll.print();
                     break;
-                case AddSalariedEmployee:
+                case ADD_SALARIED_EMPLOYEE:
                     p("Enter name followed by yearly salary in dollars (Example- John 150000):\n");
                     Employee salariedEmployee = new SalariedEmployee(in.next().replace(":", ""), in.nextDouble());
                     payroll.addEmployee(salariedEmployee);
                     pf("Employee added- %s\n", salariedEmployee);
                     break;
-                case AddHourlyEmployee:
+                case ADD_HOURLY_EMPLOYEE:
                     p("Enter name followed by hourly pay in dollars (Example- John 11):\n");
                     Employee hourlyEmployee = new HourlyEmployee(in.next(), in.nextDouble());
                     payroll.addEmployee(hourlyEmployee);
                     pf("Employee added- %s\n", hourlyEmployee);
                     break;
-                case RemoveEmployee:
+                case REMOVE_EMPLOYEE:
                     p("Enter id: ");
                     if(payroll.removeEmployee(in.nextInt()))
                         p("Employee removed\n");
                     else
                         p("Employee with that id is not in the Payroll\n");
                     break;
-                case AccessEmployee:
+                case ACCESS_EMPLOYEE:
                     p("Enter id: ");
                     Employee accessedEmployee = payroll.findEmployee(in.nextInt());
                     pf("%s\n", (accessedEmployee != null) ? accessedEmployee : "Employee with that id is not in the Payroll");
                     break;
-                case GiveRaise:
+                case GIVE_RAISE:
                     p("Enter id: ");
                     int id = in.nextInt();
                     Employee raiseEmployee = payroll.findEmployee(id);
@@ -57,7 +57,7 @@ public class OOPDesign {
                     } else
                         p("Employee with that id is not in the Payroll\n");
                     break;
-                case LogHourlyEmployeeHours:
+                case LOG_HOURLY_EMPLOYEE_HOURS:
                     p("Enter id: ");
                     Employee hourlyEmployeeProbably = payroll.findEmployee(in.nextInt());
                     if(hourlyEmployeeProbably != null) {
@@ -71,24 +71,24 @@ public class OOPDesign {
                     } else
                         p("Employee with that id is not in the Payroll\n");
                     break;
-                case GetWeekPayroll:
+                case GET_WEEK_PAYROLL:
                     pf("Payroll for the week: $%s\n", payroll.getWeekPayroll());
                     break;
-                case StartNewWeek:
+                case START_NEW_WEEK:
                     payroll.startNewWeek();
                     p("New week started\n");
                     break;
-                case quit:
+                case QUIT:
                     payroll.saveToFile(payrollFile);
                     break;
             }
             p('\n');
-        } while(input != menu.quit);
+        } while(input != menu.QUIT);
     }
 
     public static void pMenu() {
         for(menu option: menu.values())
-            pf("%d. %s%n", option.ordinal(), option);
+            pf("%d. %s%n", option.ordinal(), option.toString().replace('_', ' '));
     }
 
     public static void p(Object o) {
@@ -99,4 +99,4 @@ public class OOPDesign {
     }
 }
 
-enum menu {print, AddSalariedEmployee, AddHourlyEmployee, RemoveEmployee, AccessEmployee, GiveRaise, LogHourlyEmployeeHours, GetWeekPayroll, StartNewWeek, quit};
+enum menu {PRINT, ADD_SALARIED_EMPLOYEE, ADD_HOURLY_EMPLOYEE, REMOVE_EMPLOYEE, ACCESS_EMPLOYEE, GIVE_RAISE, LOG_HOURLY_EMPLOYEE_HOURS, GET_WEEK_PAYROLL, START_NEW_WEEK, QUIT}

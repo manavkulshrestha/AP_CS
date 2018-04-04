@@ -45,6 +45,13 @@ public class Payroll {
         return employee;
     }
 
+    public Employee addEmployee(int id, Employee employee) {
+        employee.setID(id);
+        this.employees.add(employee);
+
+        return employee;
+    }
+
     public boolean removeEmployee(int id) {
         Employee employee = findEmployee(id);
         if(employee == null)
@@ -60,13 +67,14 @@ public class Payroll {
 
         if(fileReader.hasNextLine()) {
             this.employeeID = fileReader.nextInt();
+            fileReader.nextLine();
 
             while(fileReader.hasNextLine()) {
                 String[] lineArray = fileReader.nextLine().split(":");
-                if(lineArray[0] == "H")
-                    this.employees.add(new HourlyEmployee(Integer.parseInt(lineArray[1]), lineArray[2], Double.parseDouble(lineArray[3])));
-                else if(lineArray[0] == "S")
-                    this.employees.add(new SalariedEmployee(Integer.parseInt(lineArray[1]), lineArray[2], Double.parseDouble(lineArray[3])));
+                if(lineArray[0].equals("H"))
+                    this.addEmployee(Integer.parseInt(lineArray[1]), new HourlyEmployee(lineArray[2], Double.parseDouble(lineArray[3])));
+                else if(lineArray[0].equals("S"))
+                    this.addEmployee(Integer.parseInt(lineArray[1]), new SalariedEmployee(lineArray[2], Double.parseDouble(lineArray[3])));
                 else
                     System.out.print("ERROR: Employee type not recognized");
             }
@@ -76,7 +84,7 @@ public class Payroll {
     public void saveToFile(String fileName) throws IOException {
         PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 
-        out.println(employeeID);
+        out.println(this.employeeID);
         for(Employee employee: this.employees)
             out.println(employee.info());
 

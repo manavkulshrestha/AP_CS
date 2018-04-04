@@ -14,11 +14,6 @@ public class HourlyEmployee extends Employee {
         this.hoursWorked = 0;
     }
 
-    public HourlyEmployee(int id, String name, double hourlyPay) {
-        super(id, name, hourlyPay);
-        this.hoursWorked = 0;
-    }
-
     public void setHoursWorked(double hours) {
         this.hoursWorked = hours;
     }

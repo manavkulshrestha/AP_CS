@@ -11,11 +11,6 @@ public abstract class Employee {
     private int id;
     private double pay;
 
-    public Employee(int id, String name, double pay) {
-        this.name = name;
-        this.pay = pay;
-    }
-
     public Employee(String name, double pay) {
         this.name = name;
         this.pay = pay;
